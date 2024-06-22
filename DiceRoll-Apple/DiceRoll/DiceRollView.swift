@@ -10,14 +10,16 @@ import SwiftUI
 struct DiceRollView: View {
     
     @ObservedObject var viewModel: DiceRollViewModel = DiceRollViewModel()
-    
+
     var body: some View {
-        VStack(spacing: 50.0) {
+        
+        VStack() {
             Text("Dice Roll")
                 .font(.title)
                 .bold()
                 .padding()
-            HStack(spacing: 20.0) {
+            Spacer()
+            HStack() {
                 ForEach(viewModel.dices, id: \.self) { dice in
                     Image(systemName: "die.face.\(dice)")
                         .resizable()
@@ -36,7 +38,18 @@ struct DiceRollView: View {
                     .cornerRadius(10)
             }
             Spacer()
-            Stepper("Dice count: \(viewModel.numberOfDices)", value: $viewModel.numberOfDices, in: 1...2)
+            VStack {
+                Text("Dice count: \(viewModel.numberOfDices)")
+                    .font(.title2)
+                    .bold()
+                Picker("Dice count", selection: $viewModel.numberOfDices) {
+                    Text("1").tag(1)
+                    Text("2").tag(2)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .frame(width: 200)
+            }
+            .padding()
         }
         .padding()
     }
